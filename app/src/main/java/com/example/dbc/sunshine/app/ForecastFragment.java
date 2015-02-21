@@ -37,6 +37,8 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.action_refresh){
+            FetchWeatherTask weatherTask = new FetchWeatherTask();
+            weatherTask.execute();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -117,6 +119,7 @@ public class FetchWeatherTask extends AsyncTask<Void, Void, Void>{
                 return null;
             }
             forecastJsonStr = stringBuffer.toString();
+            Log.i(LOG_TAG,"Our JSON is:"+ forecastJsonStr);
         }catch(IOException e){
             Log.e(LOG_TAG, "ERROR", e);
         }finally {
