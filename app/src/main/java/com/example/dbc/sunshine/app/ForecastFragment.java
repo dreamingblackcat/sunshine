@@ -1,5 +1,6 @@
 package com.example.dbc.sunshine.app;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -38,7 +39,7 @@ public class ForecastFragment extends Fragment {
         int id = item.getItemId();
         if(id == R.id.action_refresh){
             FetchWeatherTask weatherTask = new FetchWeatherTask();
-            weatherTask.execute();
+            weatherTask.execute("94043");
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -52,7 +53,7 @@ public class ForecastFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.forecastfragment,menu);
+        inflater.inflate(R.menu.forecastfragment, menu);
     }
 
     @Override
@@ -92,16 +93,36 @@ public class ForecastFragment extends Fragment {
         return rootView;
     }
 
-public class FetchWeatherTask extends AsyncTask<Void, Void, Void>{
+public class FetchWeatherTask extends AsyncTask<String, Void, Void>{
     private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
     @Override
-    protected Void doInBackground(Void... params) {
+    protected Void doInBackground(String... params) {
+
+        if(params == null){
+            return null;
+        }
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         String forecastJsonStr;
+        String unit = "metric";
+        String format = "json";
+        int days = 7;
         try {
-            URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7");
+            final String FORECAST_BASE_URL ="http://api.openweathermap.org/data/2.5/forecast/daily?";
+            final String QUERY_PARAM = "q";
+            final String UNIT_PARAM = "units";
+            final String FORMAT_PARAM = "mode";
+            final String DAYS_PARAM = "cnt";
+            Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
+                    .appendQueryParameter(QUERY_PARAM,params[0])
+                    .appendQueryParameter(UNIT_PARAM,unit)
+                    .appendQueryParameter(FORMAT_PARAM,format)
+                    .appendQueryParameter(DAYS_PARAM,Integer.toString(days))
+                    .build();
+            URL url = new URL(builtUri.toString());
+
+            Log.v(LOG_TAG, "The built url is :" + url);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
