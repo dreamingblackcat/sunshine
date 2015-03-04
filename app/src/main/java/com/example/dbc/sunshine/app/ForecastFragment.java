@@ -1,11 +1,11 @@
 package com.example.dbc.sunshine.app;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -100,10 +99,10 @@ public class ForecastFragment extends Fragment {
         weatherListView.setAdapter(mforecastAdapter);
         weatherListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast toast = Toast.makeText(getActivity(),"Hello From Toast", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.TOP|Gravity.LEFT, 50, 50);
-                toast.show();
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String forecast = mforecastAdapter.getItem(position);
+                Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra(Intent.EXTRA_TEXT,forecast);
+               startActivity(intent);
             }
         });
 
