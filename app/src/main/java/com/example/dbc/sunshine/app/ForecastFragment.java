@@ -5,15 +5,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -93,8 +96,16 @@ public class ForecastFragment extends Fragment {
         );
 
         FrameLayout mainFrame = (FrameLayout) rootView.findViewById(R.id.list_fragment);
-        ListView piratesListView = (ListView)mainFrame.findViewById(R.id.listView);
-        piratesListView.setAdapter(mforecastAdapter);
+        ListView weatherListView = (ListView)mainFrame.findViewById(R.id.listView);
+        weatherListView.setAdapter(mforecastAdapter);
+        weatherListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast toast = Toast.makeText(getActivity(),"Hello From Toast", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.TOP|Gravity.LEFT, 50, 50);
+                toast.show();
+            }
+        });
 
         return rootView;
     }
