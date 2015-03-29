@@ -4,13 +4,14 @@ package com.example.dbc.sunshine.app.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.dbc.sunshine.app.data.WeatherContract.LocationEntry;
 import com.example.dbc.sunshine.app.data.WeatherContract.WeatherEntry;
 
 class WeatherDbHelper extends SQLiteOpenHelper{
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "weather.db";
 
     public WeatherDbHelper(Context context){
@@ -40,8 +41,8 @@ class WeatherDbHelper extends SQLiteOpenHelper{
                 LocationEntry.COLUMN_COORD_LONG + " REAL NOT NULL " +
                 " );";
 
+            Log.i("heehe","Called on Create");
         final String SQL_CREATE_WEATHER_TABLE = "CREATE TABLE " + WeatherEntry.TABLE_NAME + "(" +
-
              WeatherEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
              WeatherEntry.COLUMN_LOC_KEY + " INTEGER NOT NULL," +
              WeatherEntry.COLUMN_WEATHER_ID + " INTEGER NOT NULL," +
